@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to Christmas</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Mountains of Christmas', cursive;
+            background: linear-gradient(to bottom, #d8f0ff, #a2d7ff, #ffffff);
+            color: #333;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            background-color: #ffffff;
+        }
+
+        /* Sunlight effect (shining rays) */
+        .sunlight {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 20%, rgba(255, 255, 255, 0) 100%);
+            background-size: 200% 200%;
+            animation: shine 3s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            50% {
+                background-position: 100% 100%;
+            }
+
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+
+        h1 {
+            font-size: 5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #1e90ff;
+            text-shadow: 2px 2px 4px #ffffff, 0 0 25px #ffffff, 0 0 50px #ffffff, 0 0 75px #ffffff;
+            position: relative;
+            z-index: 2;
+        }
+
+        #countdown {
+            font-size: 3rem;
+            display: flex;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .time-box {
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #1e90ff, #00c8ff);
+            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .time-box:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #00c8ff, #1e90ff);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px #ffffff, 0 0 25px #ffffff, 0 0 50px #ffffff, 0 0 75px #ffffff;
+        }
+
+        .label {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            color: #fff;
+            text-shadow: 1px 1px 4px #000;
+        }
+
+        /* Snow effect */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #00c8ff;
+            font-size: 1rem;
+            opacity: 0.9;
+            animation: fall 10s linear infinite;
+            z-index: 1;
+            text-shadow: 0 0 10px #00c8ff, 0 0 20px #00c8ff, 0 0 30px #00c8ff;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Audio player styling */
+        audio {
+            display: none;
+            /* Hide the default audio controls */
+        }
+
+        /* Custom Play/Pause button styling */
+        .audio-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1e90ff;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            transition: background-color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            transform: rotate(270deg);
+            /* Rotate the button 270 degrees */
+        }
+
+        /* Play state (triangle icon) */
+        .audio-controls.playing {
+            background-color: #00c8ff;
+        }
+
+        /* Pause state (square icon) */
+        .audio-controls.paused {
+            background-color: #1e90ff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transform: rotate(270deg);
+            /* Rotate the button 270 degrees */
+        }
+
+        /* Play icon - triangle facing right */
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid #ffffff;
+            /* Adjust this to make the triangle face right */
+            border-radius: 3px;
+        }
+
+        /* Pause icon - square with rounded corners */
+        .pause-icon {
+            width: 15px;
+            height: 15px;
+            background-color: #ffffff;
+            border-radius: 3px;
+            /* Rounded corners for square */
+        }
+
+        .audio-controls:hover {
+            background-color: #00c8ff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sunlight effect -->
+    <div class="sunlight"></div>
+
+    <!-- Background Music -->
+    <audio id="audioPlayer" loop>
+        <source src="christmas_countdown.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <h1>Countdown to Christmas</h1>
+    <div id="countdown">
+        <div class="time-box">
+            <span id="days">0</span>
+            <div class="label">Days</div>
+        </div>
+        <div class="time-box">
+            <span id="hours">0</span>
+            <div class="label">Hours</div>
+        </div>
+        <div class="time-box">
+            <span id="minutes">0</span>
+            <div class="label">Minutes</div>
+        </div>
+        <div class="time-box">
+            <span id="seconds">0</span>
+            <div class="label">Seconds</div>
+        </div>
+    </div>
+
+    <!-- Custom Play/Pause Button -->
+    <div class="audio-controls paused" id="playPauseButton">
+        <div class="pause-icon"></div> <!-- Default Pause Icon -->
+    </div>
+
+    <!-- Snowflakes -->
+    <script>
+        function createSnowflakes() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.textContent = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.fontSize = Math.random() * 1.5 + 0.5 + 'rem';
+            snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
+
+            document.body.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, 10000);
+        }
+
+        setInterval(createSnowflakes, 200);
+    </script>
+
+    <script>
+        function updateCountdown() {
+            const christmasDate = new Date(new Date().getFullYear(), 11, 25); // December 25
+            const now = new Date();
+            const diff = christmasDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+            } else {
+                document.getElementById('countdown').textContent = "Merry Christmas!";
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Audio player control
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playPauseButton = document.getElementById('playPauseButton');
+
+        playPauseButton.addEventListener('click', function () {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playPauseButton.classList.remove('paused');
+                playPauseButton.classList.add('playing');
+                playPauseButton.innerHTML = '<div class="play-icon"></div>'; // Show play triangle
+            } else {
+                audioPlayer.pause();
+                playPauseButton.classList.remove('playing');
+                playPauseButton.classList.add('paused');
+                playPauseButton.innerHTML = '<div class="pause-icon"></div>'; // Show pause square
+            }
+        });
+    </script>
+</body>
+
+</html>
